@@ -5,7 +5,7 @@ use warnings;
 package MooseX::Deprecated;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.003';
+our $VERSION   = '0.004';
 
 use Carp;
 use MooseX::Role::Parameterized;
@@ -207,6 +207,20 @@ fatalize them.
 Please report any bugs to
 L<http://rt.cpan.org/Dist/Display.html?Queue=MooseX-Deprecated>.
 
+=head2 Perl 5.8
+
+The behaviour of C<< warnings::warnif >> changed significantly between
+Perl 5.8 and 5.10; the location considered to be the effective caller
+changed from being "like C<warn>" to being "like C<carp>" (the latter
+being considerably more useful). Therefore under Perl 5.8, doing things
+like C<< no warnings "deprecated" >> in your code to control warnings
+from this role is rather useless, because your code is unlikely to be
+considered to be the caller.
+
+In the test suite I just skip the complex test that checks for this on
+Perl prior to 5.10, allowing you to install this module without a hitch
+on Perl 5.8.
+
 =head1 SEE ALSO
 
 L<Package::DeprecationManager> provides a more powerful and complicated
@@ -219,6 +233,9 @@ ironically not (what Moose calls) attributes.
 
 L<Devel::Deprecation> has some pretty nice features, but is more manual
 than I'd like, and again only deals with methods.
+
+Not to be confused with L<Moose::Deprecated> which can be used to
+manage warnings issued by Moose itself.
 
 L<http://en.wikipedia.org/wiki/Self-deprecation>.
 
