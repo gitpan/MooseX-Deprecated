@@ -1,0 +1,113 @@
+NAME
+    MooseX::Deprecated - mark attributes and methods as deprecated
+
+SYNOPSIS
+       package Goose
+       {
+          use Moose;
+      
+          has feathers => (is => 'ro');
+      
+          sub honk { say "Honk!" }
+      
+          with "MooseX::Deprecated" => {
+             attributes => [ "feathers" ],
+             methods    => [ "honk" ],
+          };
+       }
+
+DESCRIPTION
+    MooseX::Deprecated is a parameterizable role that makes it easy to
+    deprecate particular attributes and methods in a class.
+
+    In the SYNOPSIS above, `before` method modifiers will be installed on the
+    `feathers` accessor and the `honk` method, issuing a deprecation warning.
+    Additionally, an `after` modifier will be installed on the class' `BUILD`
+    method which will issue deprecation warnings for any deprecated attributes
+    passed to the constructor.
+
+    The warning text will be something along the lines of: "%s is a deprecated
+    %s"
+
+    Warnings are issued in the "deprecated" warnings category, so can be
+    disabled using:
+
+       no warnings qw( deprecated );
+
+    Warnings can be upgraded to fatal errors with:
+
+       use warnings FATAL => qw( deprecated );
+
+    When consuming the role you *must* pass either a list of attributes, or a
+    list of methods, or both, as parameters to the role. If you forget to do
+    so, you'll get an error message like: "%s with no list of attributes or
+    methods".
+
+CAVEATS
+    To deprecate an attribute, the attribute must actually exist at the time
+    you consume this role. In particular, this will not work:
+
+       package Goose
+       {
+          use Moose;
+      
+          with "MooseX::Deprecated" => {
+             attributes => [ "feathers" ],
+          };
+      
+          has feathers => (is => 'ro');
+       }
+
+    Because the "feathers" attribute isn't defined until *after* the role is
+    consumed. Attempting the above will die with a nasty error message:
+    "Attribute %s does not exist in %s so cannot be deprecated".
+
+    If a deprecated attribute handles any methods via delegation, then calling
+    these methods will result in not one, but two warnings. One warning for
+    calling the delegated method; the other warning for calling the accessor
+    (reader) to obtain the object to delegate to. This could theoretically be
+    changed, but I'm comfortable with the existing situation.
+
+    In mutable classes, warnings issued from the constructor will appear to
+    come from Moose's innards, and not from the constructor's real call site.
+    This means that disabling them or fatalizing them with `no warnings` or
+    `use warnings FATAL` will not work. You should always make classes
+    immutable anyway.
+
+    Warnings issued by the accessor (reader) during method delegation will
+    similarly not be issued from the correct call site, affecting your ability
+    to disable or fatalize them. Making the class immutable cannot fix this
+    one I'm afraid.
+
+BUGS
+    Please report any bugs to
+    <http://rt.cpan.org/Dist/Display.html?Queue=MooseX-Deprecated>.
+
+SEE ALSO
+    Package::DeprecationManager provides a more powerful and complicated set
+    of features. I'm a simple kind of guy, and don't see the need to allow my
+    caller to pick and choose which deprecations they'd like to ignore based
+    on some API version.
+
+    Attribute::Deprecated is cute, but only deals with methods, and ironically
+    not (what Moose calls) attributes.
+
+    Devel::Deprecation has some pretty nice features, but is more manual than
+    I'd like, and again only deals with methods.
+
+    <http://en.wikipedia.org/wiki/Self-deprecation>.
+
+AUTHOR
+    Toby Inkster <tobyink@cpan.org>.
+
+COPYRIGHT AND LICENCE
+    This software is copyright (c) 2013 by Toby Inkster.
+
+    This is free software; you can redistribute it and/or modify it under the
+    same terms as the Perl 5 programming language system itself.
+
+DISCLAIMER OF WARRANTIES
+    THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+    WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+    MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
