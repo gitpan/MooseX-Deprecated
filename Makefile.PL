@@ -31,7 +31,7 @@ my $meta = {
                                      },
                       },
   "provides"       => {
-                        "MooseX::Deprecated" => { file => "lib/MooseX/Deprecated.pm", version => 0.001 },
+                        "MooseX::Deprecated" => { file => "lib/MooseX/Deprecated.pm", version => 0.002 },
                       },
   "release_status" => "stable",
   "resources"      => {
@@ -46,7 +46,7 @@ my $meta = {
                                         },
                         X_identifier => "http://purl.org/NET/cpan-uri/dist/MooseX-Deprecated/project",
                       },
-  "version"        => 0.001,
+  "version"        => 0.002,
 };
 
 my %dynamic_config;

@@ -68,16 +68,9 @@ CAVEATS
     (reader) to obtain the object to delegate to. This could theoretically be
     changed, but I'm comfortable with the existing situation.
 
-    In mutable classes, warnings issued from the constructor will appear to
-    come from Moose's innards, and not from the constructor's real call site.
-    This means that disabling them or fatalizing them with `no warnings` or
-    `use warnings FATAL` will not work. You should always make classes
-    immutable anyway.
-
-    Warnings issued by the accessor (reader) during method delegation will
-    similarly not be issued from the correct call site, affecting your ability
-    to disable or fatalize them. Making the class immutable cannot fix this
-    one I'm afraid.
+    Warnings issued by the accessor (reader) during method delegation come
+    from inside your class, and thus the caller cannot disable them or
+    fatalize them.
 
 BUGS
     Please report any bugs to
