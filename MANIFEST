@@ -14,4 +14,6 @@ dist.ini
 doap.ttl
 lib/MooseX/Deprecated.pm
 t/01basic.t
-t/02perl58.t
+t/02immutable.t
+t/common.pl
+t/common58.pl

@@ -38,6 +38,8 @@ DESCRIPTION
 
        use warnings FATAL => qw( deprecated );
 
+    Warnings will only be issued once per call site.
+
     When consuming the role you *must* pass either a list of attributes, or a
     list of methods, or both, as parameters to the role. If you forget to do
     so, you'll get an error message like: "%s with no list of attributes or
@@ -86,7 +88,8 @@ BUGS
 
     In the test suite I just skip the complex test that checks for this on
     Perl prior to 5.10, allowing you to install this module without a hitch on
-    Perl 5.8.
+    Perl 5.8. However, you are strongly discouraged from using this module
+    with Perl 5.8.
 
 SEE ALSO
     Package::DeprecationManager provides a more powerful and complicated set
@@ -109,7 +112,7 @@ AUTHOR
     Toby Inkster <tobyink@cpan.org>.
 
 COPYRIGHT AND LICENCE
-    This software is copyright (c) 2013 by Toby Inkster.
+    This software is copyright (c) 2013-2014 by Toby Inkster.
 
     This is free software; you can redistribute it and/or modify it under the
     same terms as the Perl 5 programming language system itself.
